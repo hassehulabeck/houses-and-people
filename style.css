@@ -2,13 +2,28 @@
     margin: 0;
 }
 
-.person::after {
-    content: "&#9787;";
-    color: red;
+#sthlm {
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/b/ba/Riddarholmen_from_Stockholm_City_Hall_tower.jpg");
+    background-size: cover;
+}
+
+#got {
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/8/8b/Tuveraset_GNM7033-002.jpg");
+    background-size: cover;
+}
+
+.city h1 {
+    text-shadow: 1px 1px 2px white, -1px -1px 2px white, -1px 1px 2px white, 1px -1px 2px white;
+}
+
+.person::before {
+    content: "\263B";
+    color: white;
+    font-size: 1.5em;
 }
 
 .house {
-    background: red;
+    background: orange;
     display: inline-block;
     height: 55px;
     margin-left: 20px;
@@ -18,7 +33,7 @@
 }
 
 .house:before {
-    border-bottom: 35px solid red;
+    border-bottom: 35px solid orange;
     border-left: 50px solid transparent;
     border-right: 50px solid transparent;
     content: "";

@@ -1,50 +1,95 @@
 const store = new Vuex.Store({
     state: {
-        cities: [
-            "Stockholm",
-            "Göteborg"
+        houses: [{
+                id: 1,
+                address: "Kungsgatan 1",
+                city: "Stockholm"
+            },
+            {
+                id: 2,
+                address: "Drottninggatan 23",
+                city: "Göteborg"
+            },
+            {
+                id: 3,
+                address: "Rucklargränd 3",
+                city: "Stockholm"
+            }
         ],
-        houses: [],
         people: [{
             name: "Adam",
-            telnr: 26
+            telnr: 27,
+            house: 1
         }, {
             name: "Billy",
-            telnr: 35
+            telnr: 35,
+            house: 3
         }, {
             name: "Che",
-            telnr: 773
+            telnr: 773,
+            house: 2
         }, {
             name: "Dee",
-            telnr: 12
+            telnr: 12,
+            house: 1
         }]
+    },
+    getters: {
+        getHousesByCity: (state) => (city) => {
+            return state.houses.filter(house => house.city == city)
+        },
+        getPeopleByHouse: (state) => (house) => {
+            return state.people.filter(people => people.house == house)
+        }
+
     }
 })
 
 const Person = {
+    props: ['person'],
     template: `
         <div class="person">
-            
+            <span> {{ person.name }}</span>
         </div>
     `
 }
 
 const House = {
+    props: [
+        'house'
+    ],
+    computed: {
+        people() {
+            return store.getters.getPeopleByHouse(this.house.id)
+        }
+    },
     template: `
         <div class="house">
-            <person-type v-for="person in people" v-bind:person="person">
+            <person-type v-for="person, index in people" v-bind:person="person" v-bind:key="index" v-on:click="showHouseInfo">
             </person-type>
         </div>
     `,
     components: {
         'person-type': Person
+    },
+    methods: {
+        showHouseInfo: function() {
+            console.log(this.house)
+        }
     }
 }
 
 Vue.component('city', {
+    props: ['title'],
+    computed: {
+        houses() {
+            return store.getters.getHousesByCity(this.title)
+        }
+    },
     template: `
         <div class="city">
-            <house-building v-for="house, index in houses" v-bind:house="house"></house-building>
+            <h1> {{ this.title }} </h1>
+            <house-building v-for="house, index in houses" v-bind:house="house" v-bind:key="index"></house-building>
         </div>
     `,
     components: {
@@ -53,8 +98,5 @@ Vue.component('city', {
 });
 
 const app = new Vue({
-    el: "#app",
-    data: {
-        tal: 3
-    }
+    el: "#app"
 });
