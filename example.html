@@ -9,9 +9,13 @@
     <div id="app">
         <p> {{ summa }}
             <button @click="increment(1)">+</button>
-            <button @click="decrement">-</button>
+            <button @click="decrement(1)">-</button>
             <br>
-            <button @click="increment(10)">+10</button>
+            <!-- Det går att anropa en commit direkt utan att behöva gå via app-methods 
+            Bör dock bara användas för enkla metoder
+            Kräver också att vi definierar store nere i appen. (Se raden under el:) -->
+            <button @click="$store.commit('inc', 10)">+10</button>
+            <button @click="decrement(10)">-10</button>
     </div>
 </body>
 
@@ -29,12 +33,13 @@
             Dels som vanlig funktion (ovan),
             dels som arrow function (nedan).
             */
-            dec: state => state.summa--
+            dec: (state, payload) => state.summa -= payload
         }
     })
 
     const app = new Vue({
         el: "#app",
+        store,
         computed: {
             summa() {
                 return store.state.summa
@@ -44,8 +49,8 @@
             increment(nummer) {
                 store.commit('inc', nummer)
             },
-            decrement() {
-                store.commit('dec')
+            decrement(nummer) {
+                store.commit('dec', nummer)
             }
         }
     })
