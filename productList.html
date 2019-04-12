@@ -1,0 +1,77 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuex@3.0.1/dist/vuex.js"></script>
+    <title>Productlist med Vuex</title>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="getProducts">Ladda in produkter</button>
+        <div>
+            <ul v-if="products != null">
+                <li v-for="product in products.products" :key="product.id">
+                    {{ product.name }}
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    const store = new Vuex.Store({
+        state: {
+            products: null
+        },
+        getters: {
+            allProducts: function() {
+                return store.state.products;
+            }
+        },
+        mutations: {
+            setData(state, products) {
+                state.products = products;
+            }
+        },
+        actions: {
+            getData(context) {
+                var xhr = new XMLHttpRequest;
+                var url = "https://www.hulabeck.se/html/temp/products.json";
+                var products;
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.status == 200 && xhr.readyState == 4) {
+                        products = xhr.response.products;
+                        context.commit('setData', {
+                            products
+                        });
+                    }
+                }
+
+                xhr.open("GET", url);
+                xhr.responseType = 'json';
+                xhr.send();
+
+            }
+        }
+    })
+    const app = new Vue({
+        el: "#app",
+        store,
+        methods: {
+            getProducts() {
+                this.$store.dispatch('getData')
+            }
+        },
+        computed: {
+            products() {
+                return this.$store.getters.allProducts;
+            }
+        }
+    })
+</script>
