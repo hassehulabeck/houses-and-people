@@ -2,14 +2,32 @@
     margin: 0;
 }
 
-#sthlm {
-    background-image: url("https://upload.wikimedia.org/wikipedia/commons/b/ba/Riddarholmen_from_Stockholm_City_Hall_tower.jpg");
+#app {
+    display: flex;
+    width: 100%;
+}
+
+section {
+    flex: 1 0 auto;
+}
+
+section:last-child {
+    margin: 1em;
+}
+
+.city {
     background-size: cover;
+    background-position: center;
+    padding: 1em;
+    margin: 1em;
+}
+
+#sthlm {
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/8/81/Gamla_stan%2C_S%C3%B6dermalm%2C_Stockholm%2C_Sweden_-_panoramio_cropped.jpg");
 }
 
 #got {
     background-image: url("https://upload.wikimedia.org/wikipedia/commons/8/8b/Tuveraset_GNM7033-002.jpg");
-    background-size: cover;
 }
 
 .city h1 {
@@ -19,13 +37,17 @@
 .person::before {
     content: "\263B";
     color: white;
-    font-size: 1.5em;
+    font-size: 1.65em;
+}
+
+.person em {
+    font-size: 0.8em;
 }
 
 .house {
     background: orange;
     display: inline-block;
-    height: 55px;
+    height: 100px;
     margin-left: 20px;
     margin-top: 55px;
     position: relative;
@@ -42,10 +64,4 @@
     position: absolute;
     top: -35px;
     width: 0;
-}
-
-.city {
-    background: yellow;
-    padding: 1em;
-    margin: 1em;
 }

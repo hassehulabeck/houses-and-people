@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuex@3.0.1/dist/vuex.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p> {{ summa }}
+            <button @click="increment(1)">+</button>
+            <button @click="decrement">-</button>
+            <br>
+            <button @click="increment(10)">+10</button>
+    </div>
+</body>
+
+</html>
+<script>
+    const store = new Vuex.Store({
+        state: {
+            summa: 0
+        },
+        mutations: {
+            inc(state, payload) {
+                state.summa += payload
+            },
+            /* Vi kan skriva en mutation på två olika sätt.
+            Dels som vanlig funktion (ovan),
+            dels som arrow function (nedan).
+            */
+            dec: state => state.summa--
+        }
+    })
+
+    const app = new Vue({
+        el: "#app",
+        computed: {
+            summa() {
+                return store.state.summa
+            }
+        },
+        methods: {
+            increment(nummer) {
+                store.commit('inc', nummer)
+            },
+            decrement() {
+                store.commit('dec')
+            }
+        }
+    })
+</script>

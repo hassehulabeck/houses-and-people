@@ -7,14 +7,25 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vuex@3.0.1/dist/vuex.js"></script>
-
+    <script src="https://unpkg.com/vue-select@latest"></script>
     <title>Vuex som region</title>
 </head>
 
 <body>
     <div id="app">
-        <city title="Stockholm" id="sthlm"></city>
-        <city title="Göteborg" id="got"></city>
+        <section>
+            <city title="Stockholm" id="sthlm"></city>
+            <city title="Göteborg" id="got"></city>
+        </section>
+        <section>
+            <label>Vem ska ge 50% av sina stålar?</label>
+            <person-selektor label="name" @input="setGiver" :options="$store.state.people" :value="$store.state.giver"></person-selektor>
+            <label>Och vem ska ta degen?</label>
+            <person-selektor label="name" @input="setTaker" :options="$store.state.people" :value="$store.state.taker"></person-selektor>
+            <button v-on:click="makeTheDeal">Transfer money</button>
+        </section>
+
+    </div>
     </div>
 </body>
 

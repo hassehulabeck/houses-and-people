@@ -18,21 +18,23 @@ const store = new Vuex.Store({
         ],
         people: [{
             name: "Adam",
-            telnr: 27,
-            house: 1
+            house: 1,
+            money: 1000
         }, {
             name: "Billy",
-            telnr: 35,
-            house: 3
+            house: 3,
+            money: 20
         }, {
             name: "Che",
-            telnr: 773,
-            house: 2
+            house: 2,
+            money: 300
         }, {
             name: "Dee",
-            telnr: 12,
-            house: 1
-        }]
+            house: 1,
+            money: 310
+        }],
+        giver: null,
+        taker: null
     },
     getters: {
         getHousesByCity: (state) => (city) => {
@@ -42,6 +44,20 @@ const store = new Vuex.Store({
             return state.people.filter(people => people.house == house)
         }
 
+    },
+    mutations: {
+        setGiver(state, person) {
+            state.giver = person
+        },
+        setTaker(state, person) {
+            state.taker = person
+        },
+        makeDeal(state) {
+            var pot = state.giver.money / 2;
+            state.giver.money -= pot;
+            state.taker.money += pot;
+        }
+
     }
 })
 
@@ -49,10 +65,12 @@ const Person = {
     props: ['person'],
     template: `
         <div class="person">
-            <span> {{ person.name }}</span>
+            <span> {{ person.name }} <br/><em>({{ person.money }} )</em></span>
         </div>
     `
 }
+
+Vue.component('personSelektor', VueSelect.VueSelect)
 
 const House = {
     props: [
@@ -60,12 +78,12 @@ const House = {
     ],
     computed: {
         people() {
-            return store.getters.getPeopleByHouse(this.house.id)
+            return this.$store.getters.getPeopleByHouse(this.house.id)
         }
     },
     template: `
-        <div class="house">
-            <person-type v-for="person, index in people" v-bind:person="person" v-bind:key="index" v-on:click="showHouseInfo">
+        <div class="house" v-on:mouseover="showHouseInfo">
+            <person-type v-for="person, index in people" v-bind:person="person" v-bind:key="index" >
             </person-type>
         </div>
     `,
@@ -74,7 +92,7 @@ const House = {
     },
     methods: {
         showHouseInfo: function() {
-            console.log(this.house)
+            console.log(this.house.address)
         }
     }
 }
@@ -83,7 +101,7 @@ Vue.component('city', {
     props: ['title'],
     computed: {
         houses() {
-            return store.getters.getHousesByCity(this.title)
+            return this.$store.getters.getHousesByCity(this.title)
         }
     },
     template: `
@@ -98,5 +116,17 @@ Vue.component('city', {
 });
 
 const app = new Vue({
-    el: "#app"
+    el: "#app",
+    store,
+    methods: {
+        setGiver(val) {
+            this.$store.commit('setGiver', val)
+        },
+        setTaker(val) {
+            this.$store.commit('setTaker', val)
+        },
+        makeTheDeal() {
+            this.$store.commit('makeDeal')
+        }
+    }
 });
